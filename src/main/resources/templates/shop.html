@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Dodaj linki do Vue.js, jeśli są potrzebne -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<div th:replace="~{Header :: header}"></div>
+
+<div id="sklep">
+  <h1>Lista Produktów</h1>
+
+  <div v-for="produkt in produkty" :key="produkt.id" class="produkt">
+    <h2>{{ produkt.nazwa }}</h2>
+    <p>Cena: {{ produkt.cena }} zł</p>
+    <p>{{ produkt.opis }}</p>
+    <button @click="addToCart(produkt)">Dodaj do koszyka</button>
+  </div>
+</div>
+
+<script>
+  new Vue({
+    el: '#sklep',
+    data: {
+      produkty: [],
+    },
+    methods: {
+      addToCart(produkt) {
+        // Tutaj umieść logikę dodawania oferty do koszyka
+        console.log('Dodano do koszyka:', produkt);
+      }
+    },
+    mounted() {
+      // Pobierz oferty z serwera przy ładowaniu strony
+      fetch('[[${@APIRoutesName.GetOFFER()}]]')
+              .then(response => response.json())
+              .then(data => {
+                this.produkty = data;
+              })
+              .catch(error => console.error('Błąd pobierania danych:', error));
+    }
+  });
+</script>
+
+<div th:replace="~{Footer :: footer}"></div>
+</body>
+</html>

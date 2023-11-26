@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Forum</title>
+    <!-- Dodaj linki do bibliotek Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <!-- Dodaj własny skrypt Vue.js -->
+</head>
+<body>
+<div th:replace="Header :: header"></div>
+<div id="app">
+    <!-- Formularz do dodawania nowego pytania -->
+    <div>
+        <input v-model="newQuestion.name" placeholder="Nazwa Użytkownika">
+        <input v-model="newQuestion.title" placeholder="Tytuł pytania">
+        <textarea v-model="newQuestion.text" placeholder="Treść pytania"></textarea>
+        <button @click="addQuestion">Dodaj pytanie</button>
+    </div>
+
+    <!-- Lista pytań -->
+    <ul>
+        <li v-for="question in questions" :key="question.id">
+            <!-- Kliknięcie na pytanie wyświetli odpowiedzi -->
+            <div @click="toggleQuestion(question)">
+                <span>{{ question.uzytkownik }}:{{ question.tytul }}:{{ question.dataUtworzenia | formatDateTime }}</span>
+                <p>{{ question.tresc }}</p>
+            </div>
+
+            <!-- Lista odpowiedzi dla aktywnego pytania -->
+            <ul v-if="isActiveQuestion(question)">
+                <input v-model="newAnswer.name" placeholder="Nazwa Użytkownika">
+                <input v-model="newAnswer.text" placeholder="Nowa odpowiedź">
+                <button @click="addAnswer(question)">Dodaj odpowiedź</button>
+                <br>
+                <li v-for="answer in activeAnswers" :key="answer.id">
+                    <span>{{ answer.uzytkownik }}:{{ answer.dataUtworzenia | formatDateTime }}</span>
+                    <p>{{ answer.tresc }}</p>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+
+</div>
+
+<script th:inline="javascript">
+    String.prototype.format = function(dataMap) {
+        return this.replace(/{([^{}]+)}/g, function(match, key) {
+            return dataMap[key] !== undefined ? dataMap[key] : match;
+        });
+    };
+    // Pobierz pytania z serwera
+    var questionsFromSpring = /*[[${QuestionsFromSpring}]]*/ [];
+    var answerApiUrl = /*[[${@APIRoutesName.GetANSWER()}]]*/ '';
+    var answerAddApiUrl = /*[[${@APIRoutesName.GetANSWER_ADD()}]]*/ '';
+    // Inicjalizacja Vue
+    const app = new Vue({
+        el: '#app',
+        data: {
+            questions: questionsFromSpring,
+            newQuestion: {
+                name: '',
+                title: '',
+                text: '',
+            },
+            newAnswer: {
+                name: '',
+                text: '',
+            },
+            activeQuestion: null,
+            activeAnswers: null
+        },
+        methods: {
+            // Funkcja do dodawania nowego pytania
+            addQuestion: function () {
+                // Wysyłanie nowego pytania na serwer
+                fetch([[${@APIRoutesName.GetQUESTION_ADD()}]], {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tytul: this.newQuestion.title,
+                        tresc: this.newQuestion.text,
+                        uzytkownik: this.newQuestion.name
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Po sukcesie dodaj pytanie do listy
+                        this.questions.push(data);
+                        // Zresetuj pola formularza
+                        this.newQuestion.title = '';
+                        this.newQuestion.text = '';
+                        this.newQuestion.name = '';
+                    })
+                    .catch(error => console.error('Błąd podczas dodawania pytania:', error));
+            },
+            addAnswer: function () {
+                // Wysyłanie nowej odpowiedzi na serwer
+                // fetch(`${answerAddApiUrl}/${this.activeQuestion.id}`, {
+                fetch(answerAddApiUrl.format({'questionId' : this.activeQuestion.id}), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tresc: this.newAnswer.text,
+                        uzytkownik: this.newAnswer.name,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Po sukcesie dodaj odpowiedź do aktywnego pytania
+                        this.activeAnswers.push(data);
+                        // Zresetuj pola formularza
+                        this.newAnswer.text = '';
+                        this.newAnswer.name = '';
+                    })
+                    .catch(error => console.error('Błąd podczas dodawania odpowiedzi:', error));
+            },
+            toggleQuestion: function (question) {
+                if (this.activeQuestion === question) {
+                    this.activeQuestion = null;
+                } else {
+                    this.activeQuestion = question;
+                    fetch(answerApiUrl + '/' + this.activeQuestion.id)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.activeAnswers = data;
+                        })
+                        .catch(error => console.error('Błąd pobierania danych:', error));
+                }
+            },
+            // Funkcja sprawdzająca, czy dane pytanie jest aktywne
+            isActiveQuestion: function (question) {
+                return this.activeQuestion === question;
+            }
+        },
+        filters: {
+            formatDateTime: function (value) {
+                return moment(value).format('YYYY-MM-DD HH:mm');
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

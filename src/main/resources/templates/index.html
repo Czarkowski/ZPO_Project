@@ -1,0 +1,72 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="pl">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Strona Domowa</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Skrypt Vue.js &ndash;&gt;-->
+<!--<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>-->
+
+<!--<div id="app">-->
+<!--    <h1>Witaj na stronie domowej!</h1>-->
+
+<!--    &lt;!&ndash; Dodaj trzy linki do różnych podstron &ndash;&gt;-->
+<!--    <div>-->
+<!--        <a href="#" v-on:click="navigateTo('/page1')">Podstrona 1</a>-->
+<!--        <a href="#" v-on:click="navigateTo('/page2')">Podstrona 2</a>-->
+<!--        <a href="#" v-on:click="navigateTo('/page3')">Podstrona 3</a>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Wyświetl zawartość aktualnie wybranej podstrony &ndash;&gt;-->
+<!--    <div v-html="content"></div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    const app = new Vue({-->
+<!--        el: '#app',-->
+<!--        data: {-->
+<!--            content: '' // Zawartość aktualnie wybranej podstrony-->
+<!--        },-->
+<!--        methods: {-->
+<!--            navigateTo(route) {-->
+<!--                // Wyślij żądanie do Spring Boot z użyciem odpowiedniej ścieżki-->
+<!--                fetch(route)-->
+<!--                    .then(response => response.text())-->
+<!--                    .then(data => {-->
+<!--                        // Ustaw zawartość na wynik z serwera-->
+<!--                        this.content = data;-->
+<!--                    })-->
+<!--                    .catch(error => {-->
+<!--                        console.error('Błąd pobierania danych:', error);-->
+<!--                    });-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona Domowa</title>
+</head>
+<body>
+    <div th:replace="Header :: header"></div>
+
+<h1>Witaj na stronie domowej!</h1>
+
+    <div th:replace="Footer :: footer"></div>
+</body>
+</html>

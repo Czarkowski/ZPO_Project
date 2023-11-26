@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Dodaj linki do Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<div th:replace="Header :: header"></div>
+
+<div id="app">
+    <h1>Kalkulator Syropu dla Pszczół</h1>
+    <label for="type">Rodzaj:</label>
+    <select v-model="selectedBase">
+        <option v-for="base in bases" :value="base">{{ base }}</option>
+    </select>
+
+    <label for="amount">Ilość:</label>
+    <input type="text" v-model="amount">
+
+    <label for="ratio">Stosunek cukru do wody:</label>
+    <select v-model="selectedRatio">
+        <option v-for="ratio in ratios" :value="ratio">{{ ratio }}</option>
+    </select>
+
+
+    <button @click="calculate">Oblicz</button>
+
+    <div v-if="result !== null">
+        <p>Woda: {{ result.water }}</p>
+        <p>Cukier: {{ result.sugar }}</p>
+        <p>Syrop: {{ result.syrup }}</p>
+    </div>
+</div>
+
+<script>
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            users: [{name:'raz'},{name:'dwa'}],
+            bases: JSON.parse('[[${BaseElementFromSpring}]]'.replace(/&quot;/g,'"')),
+            ratios: JSON.parse('[[${RatiosFromSpring}]]'.replace(/&quot;/g,'"')),
+            selectedBase: '',
+            amount: 0,
+            selectedRatio: '',
+            result: 0
+        },
+        methods: {
+            async calculate() {
+                try {
+                    const parsedAmount = parseFloat(this.amount);
+                    if (isNaN(parsedAmount)) {
+                        console.error("Invalid amount:", this.amount);
+                    }
+                    const response = await fetch('/api/calculate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            base: this.selectedBase,
+                            ratio: this.selectedRatio,
+                            amount: parsedAmount,
+                        }),
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.result = result; // Przypisz wynik do this.result
+                    } else {
+                        console.error('Błąd przy wysyłaniu zapytania.');
+                    }
+                } catch (error) {
+                    console.error('Wystąpił błąd:', error);
+                }
+            }
+        }
+    });
+    vue.$data.selectedBase = vue.$data.bases.length > 0 ? vue.$data.bases[0] : '';
+    vue.$data.selectedRatio = vue.$data.ratios.length > 0 ? vue.$data.ratios[0] : '';
+
+</script>
+
+</body>
+</html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="pl" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Kalkulator Syropu dla Pszczół</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>Kalkulator Syropu dla Pszczół</h1>-->
+
+<!--&lt;!&ndash;/*@thymesVar id="syrupForm" type="BeeSyurpForm"*/&ndash;&gt;-->
+<!--<form th:object="${syrupForm}" th:action="@{/bee-syrup-calculator}" method="post">-->
+
+<!--    <label for="sugarAmount">Ilość cukru (w kg):</label>-->
+<!--    <input type="text" id="sugarAmount" th:field="*{sugarAmount}" required/>-->
+
+<!--    <br/>-->
+
+<!--    <label for="waterAmount">Ilość wody (w l):</label>-->
+<!--    <input type="text" id="waterAmount" th:field="*{waterAmount}" required/>-->
+
+<!--    <br/>-->
+
+<!--    <button type="submit">Oblicz</button>-->
+
+<!--</form>-->
+
+<!--<div th:if="${result}">-->
+<!--    <h2 th:text="${result}"></h2>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
