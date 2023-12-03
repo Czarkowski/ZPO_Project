@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Dodaj linki do Vue.js, jeśli są potrzebne -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <link th:href="@{styles.css}" th:rel="stylesheet"/>
+</head>
+<body>
+
+
+<div id="order">
+    <div th:replace="~{Header :: header}"></div>
+    <div ref="shoppingCart">
+        <div v-if="cartItems.length > 0">
+            <span>Twój koszyk ({{ orderSummary.totalItems }} produktów)</span>
+            <ul>
+                <li v-for="product in cartItems" :key="product.id">
+                    <span> {{ product.nazwa }} - {{ formatPrice(product.cena) }} zł </span>
+                    <span> Ilość: {{ product.ilosc }} - {{ formatPrice(product.cena * product.ilosc) }} zł </span>
+                    <button @click="increaseQuantity(product)">+</button>
+                    <button @click="decreaseQuantity(product)">-</button>
+                    <button @click="deleteQuantity(product)">X</button>
+                </li>
+            </ul>
+            <div>Podsumowanie: {{ formatPrice(orderSummary.totalPrice) }} zł</div>
+        </div>
+    </div>
+    <div>
+        <h2>Formularz Zamówienia</h2>
+        <form @submit.prevent="submitOrder">
+            <label for="name">Imię:</label>
+            <input type="text" id="name" v-model="customerData.name" required>
+
+            <label for="surname">Nazwisko:</label>
+            <input type="text" id="surname" v-model="customerData.surname" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" v-model="customerData.email" required>
+
+            <label for="street">Ulica z numerem domu:</label>
+            <input type="text" id="street" v-model="customerData.street" required>
+
+            <label for="city">Miejscowość:</label>
+            <input type="text" id="city" v-model="customerData.city" required>
+
+            <label for="postalCode">Kod pocztowy:</label>
+            <input type="text" id="postalCode" v-model="customerData.postalCode" required>
+
+            <label for="phoneNumber">Numer telefonu:</label>
+            <input type="tel" id="phoneNumber" v-model="customerData.phoneNumber" required>
+
+            <button type="submit">Złóż zamówienie</button>
+        </form>
+    </div>
+</div>
+<script th:inline="javascript" type="module">
+    var createOrder = /*[[${@APIRoutesName.GetORDER_CREATE()}]]*/ '';
+    const vueApp = new Vue({
+        el: '#order',
+        data: {
+            cartItems: [],
+            getCartUrl: /*[[${@APIRoutesName.GetCART_GET()}]]*/  '',
+            addCartUrl: /*[[${@APIRoutesName.GetCART_ADD()}]]*/  '',
+            orderSummary: {
+                totalItems: 0,
+                totalPrice: 0,
+            },
+            customerData: {
+                name: "",
+                surname: "",
+                email: "",
+                street: "",
+                city: "",
+                postalCode: "",
+                phoneNumber: "",
+            },
+        },
+        methods: {
+            submitOrder() {
+                if (this.validateOrder()) {
+                    fetch(createOrder, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(this.customerData),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Zamówienie złożone:", data);
+                             window.location.href = data.redirectUrl;
+                        })
+                        .catch(error => {
+                            console.error('Błąd podczas przetwarzania zamówienia:', error);
+                        });
+                }
+            },
+            validateOrder() {
+                return true;
+            },
+            fetchCartItems() {
+                fetch(this.getCartUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.cartItems = data;
+                        console.log(data);
+                        if (data.length < 1)
+                            window.location.href = /*[[${@staticRoutesName.HOME}]]*/ '';
+                        this.calculateOrderSummary();
+                    })
+            },
+            addCartItems(produkt) {
+                return fetch(this.addCartUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(produkt),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // response.text().then(t => alert(t));
+                        } else {
+                            console.error('Błąd dodawania do koszyka:', response.statusText);
+                        }
+                    })
+                    .catch(error => console.error('Błąd dodawania do koszyka:', error));
+            },
+            calculateOrderSummary() {
+                this.orderSummary.totalItems = this.cartItems.reduce((total, product) => total + product.ilosc, 0);
+                this.orderSummary.totalPrice = this.cartItems.reduce((total, product) => total + (product.cena * product.ilosc), 0);
+            },
+            deleteQuantity(product) {
+                product.ilosc = 0;
+                this.addCartItems(product).then(value => this.fetchCartItems());
+            },
+            increaseQuantity(product) {
+                if (product.ilosc < 10) {
+                    product.ilosc++;
+                    this.addCartItems(product);
+                    this.calculateOrderSummary();
+                }
+            },
+            decreaseQuantity(product) {
+                if (product.ilosc > 1) {
+                    product.ilosc--;
+                    this.addCartItems(product);
+                    this.calculateOrderSummary();
+                }
+            },
+            formatPrice(price) {
+                return price.toFixed(2); // Sformatuj cenę do dwóch miejsc po przecinku
+            },
+        },
+        mounted() {
+            this.fetchCartItems();
+
+            if (true)
+                this.customerData = {
+                    name: "ImięTestowe",
+                    surname: "NazwiskoTestowe",
+                    email: "test@example.com",
+                    street: "Testowa 1",
+                    city: "Testowo",
+                    postalCode: "00-000",
+                    phoneNumber: "123456789",
+                }
+        }
+    });
+
+</script>
+
+<div th:replace="~{Footer :: footer}"></div>
+</body>
+</html>

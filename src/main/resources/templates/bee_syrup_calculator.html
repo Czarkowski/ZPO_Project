@@ -6,20 +6,21 @@
 </head>
 <body>
 
-<div th:replace="Header :: header"></div>
+
 
 <div id="app">
+    <div th:replace="Header :: header"></div>
     <h1>Kalkulator Syropu dla Pszczół</h1>
     <label for="type">Rodzaj:</label>
-    <select v-model="selectedBase">
+    <select id="type" v-model="selectedBase">
         <option v-for="base in bases" :value="base">{{ base }}</option>
     </select>
 
     <label for="amount">Ilość:</label>
-    <input type="text" v-model="amount">
+    <input id="amount" type="text" v-model="amount">
 
     <label for="ratio">Stosunek cukru do wody:</label>
-    <select v-model="selectedRatio">
+    <select id="ratio" v-model="selectedRatio">
         <option v-for="ratio in ratios" :value="ratio">{{ ratio }}</option>
     </select>
 
@@ -33,13 +34,18 @@
     </div>
 </div>
 
-<script>
+<script type="module">
+    import ShoppingCart from "./ShoppingCart.js"
+
     const vue = new Vue({
         el: '#app',
+        components: {
+            'shoppingCart': ShoppingCart,
+        },
         data: {
-            users: [{name:'raz'},{name:'dwa'}],
-            bases: JSON.parse('[[${BaseElementFromSpring}]]'.replace(/&quot;/g,'"')),
-            ratios: JSON.parse('[[${RatiosFromSpring}]]'.replace(/&quot;/g,'"')),
+            users: [{name: 'raz'}, {name: 'dwa'}],
+            bases: JSON.parse('[[${BaseElementFromSpring}]]'.replace(/&quot;/g, '"')),
+            ratios: JSON.parse('[[${RatiosFromSpring}]]'.replace(/&quot;/g, '"')),
             selectedBase: '',
             amount: 0,
             selectedRatio: '',
@@ -83,7 +89,6 @@
 
 </body>
 </html>
-
 
 
 <!--<!DOCTYPE html>-->

@@ -8,6 +8,17 @@ public class StaticRoutesName {
     public static final String BEE_SYRUP_CALCULATOR = "/bee-syrup-calculator";
     public static final String SHOP = "/shop";
     public static final String FORUM = "/forum";
+    public static final String CART = "/cart";
+    public static final String ORDER = "/order";
+    public static final String PAYMENT = "/payment/{orderId}";
+    public static final String FINALIZE_ORDER = "/finalize-order/{orderId}";
+
+    public static String GetPaymentURL(Long id){
+        return PAYMENT.replace("{orderId}",id.toString());
+    }
+    public static String GetFinalizeURL(Long id){
+        return FINALIZE_ORDER.replace("{orderId}",id.toString());
+    }
 
     public StaticRoutesName() {
 

@@ -2,25 +2,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>Header Fragment</title>
 </head>
 <body>
-<header>
+<header id="header">
     <nav>
         <ul>
             <li><a href="/">Strona główna</a></li>
-            <li><div>
-                <a th:href="${@staticRoutesName.BEE_SYRUP_CALCULATOR}">Kalkulator Syropu</a>
-            </div></li>
-            <li><div>
-                <a th:href="${@staticRoutesName.SHOP}">Sklep miodowy</a>
-            </div></li>
-            <li><div>
-                <a th:href="${@staticRoutesName.FORUM}">Forum dla pszczelarzy</a>
-            </div></li>
-            <li><a href="/contact">Kontakt</a></li>
+            <li>
+                <div>
+                    <a th:href="${@staticRoutesName.BEE_SYRUP_CALCULATOR}">Kalkulator Syropu</a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a th:href="${@staticRoutesName.SHOP}">Sklep miodowy</a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <a th:href="${@staticRoutesName.FORUM}">Forum dla pszczelarzy</a>
+                </div>
+            </li>
         </ul>
     </nav>
+    <shopping-Cart id='shoppingCart' ref="shoppingCart" th:getCartUrl="${@APIRoutesName.GetCART_GET()}"
+                   th:addCartUrl="${@APIRoutesName.GetCART_ADD()}" th:orderUrl="${@staticRoutesName.ORDER}">
+
+    </shopping-Cart>
 </header>
 </body>
 </html>

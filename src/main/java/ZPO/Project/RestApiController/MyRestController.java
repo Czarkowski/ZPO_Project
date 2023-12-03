@@ -4,17 +4,13 @@ import ZPO.Project.ApiModels.CalculationRequest;
 import ZPO.Project.ApiModels.CalculationResponse;
 import ZPO.Project.Entities.Odpowiedz;
 import ZPO.Project.Entities.Pytanie;
-import ZPO.Project.Models.AnswerModel;
-import ZPO.Project.Models.Message;
-import ZPO.Project.Models.Produkt;
-import ZPO.Project.Models.QuestionModel;
+import ZPO.Project.Entities.Zamowienie;
+import ZPO.Project.Models.*;
 import ZPO.Project.MyUtilities.MyStaticUtilities;
-import ZPO.Project.Repositories.OfertaRepository;
 import ZPO.Project.Routing.APIRoutesName;
-import ZPO.Project.Services.MessageService;
-import ZPO.Project.Services.OdpowiedzService;
-import ZPO.Project.Services.OfertaService;
-import ZPO.Project.Services.PytanieService;
+import ZPO.Project.Routing.StaticRoutesName;
+import ZPO.Project.Services.*;
+import ZPO.Project.Session.ShoppingCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +28,10 @@ public class MyRestController {
     private PytanieService pytanieService ;
     @Autowired
     private OdpowiedzService odpowiedzService ;
+    @Autowired
+    private ZamowienieService zamowienieService ;
+    @Autowired
+    private ShoppingCart shoppingCart;
 
     @GetMapping("/message")
     public Message getMessage() {
@@ -45,10 +45,10 @@ public class MyRestController {
     }
 
     @GetMapping(APIRoutesName.OFFER)
-    public ResponseEntity<List<Produkt>> oferta() {
+    public ResponseEntity<List<Product>> oferta() {
 
         var oferta = ofertaService.getAllOferty();
-        var produkty = Produkt.GetProductsFromOferta(oferta);
+        var produkty = Product.GetProductsFromOferta(oferta);
         return ResponseEntity.ok(produkty);
     }
 
@@ -71,5 +71,13 @@ public class MyRestController {
     public ResponseEntity<AnswerModel> addAnswer(@PathVariable Long questionId, @RequestBody AnswerModel answer) {
         Odpowiedz savedAnswer = odpowiedzService.createOdpowiedz(questionId, answer);
         return ResponseEntity.ok(new AnswerModel(savedAnswer));
+    }
+
+    @PostMapping(APIRoutesName.ORDER_CREATE)
+    public ResponseEntity<CreateOrderResponse> addAnswer(@RequestBody OrderModel orderModel) {
+
+        var zam = zamowienieService.CreateZamowienie(orderModel, shoppingCart.getProducts());
+        shoppingCart.Clear();
+        return ResponseEntity.ok(new CreateOrderResponse(StaticRoutesName.GetPaymentURL(zam.getId())));
     }
 }

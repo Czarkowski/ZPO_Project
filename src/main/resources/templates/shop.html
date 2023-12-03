@@ -1,48 +1,81 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <!-- Dodaj linki do Vue.js, jeśli są potrzebne -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- Dodaj linki do Vue.js, jeśli są potrzebne -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link th:href="@{styles.css}" th:rel="stylesheet"/>
 </head>
 <body>
 
-<div th:replace="~{Header :: header}"></div>
 
 <div id="sklep">
-  <h1>Lista Produktów</h1>
+    <div th:replace="~{Header :: header}"></div>
+    <h1>Lista Produktów</h1>
 
-  <div v-for="produkt in produkty" :key="produkt.id" class="produkt">
-    <h2>{{ produkt.nazwa }}</h2>
-    <p>Cena: {{ produkt.cena }} zł</p>
-    <p>{{ produkt.opis }}</p>
-    <button @click="addToCart(produkt)">Dodaj do koszyka</button>
-  </div>
+    <div v-for="produkt in produkty" :key="produkt.id" class="produkt">
+        <h2>{{ produkt.nazwa }}</h2>
+        <p>Cena: {{ produkt.cena }} zł</p>
+        <p>{{ produkt.opis }}</p>
+        <button @click="addToCart(produkt)">Dodaj do koszyka</button>
+    </div>
 </div>
 
-<script>
-  new Vue({
-    el: '#sklep',
-    data: {
-      produkty: [],
-    },
-    methods: {
-      addToCart(produkt) {
-        // Tutaj umieść logikę dodawania oferty do koszyka
-        console.log('Dodano do koszyka:', produkt);
-      }
-    },
-    mounted() {
-      // Pobierz oferty z serwera przy ładowaniu strony
-      fetch('[[${@APIRoutesName.GetOFFER()}]]')
-              .then(response => response.json())
-              .then(data => {
-                this.produkty = data;
-              })
-              .catch(error => console.error('Błąd pobierania danych:', error));
-    }
-  });
+<div th:replace="~{Footer :: footer}"></div>
+
+<script th:inline="javascript" type="module">
+    import ShoppingCart from "./ShoppingCart.js"
+
+    var addToCartApiUrl = /*[[${@APIRoutesName.GetCART_ADD()}]]*/ '';
+    var addToCartGetUrl = /*[[${@APIRoutesName.GetCART_GET()}]]*/ '';
+    // var n =  new ShoppingCart();
+    // console.log(n);
+    ShoppingCart.data().getCartUrl = addToCartGetUrl;
+    const vueApp = new Vue({
+        el: '#sklep',
+        data: {
+            shoppingCartRef: null,
+            produkty: [],
+        },
+        components: {
+            'shoppingCart': ShoppingCart,
+        },
+        methods: {
+            addToCart(produkt) {
+                // Wyślij żądanie POST do dodania produktu do koszyka
+                fetch(addToCartApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(produkt),
+                })
+                    .then(response => {
+                        if (response.ok) {
+
+                            console.log(response.body, produkt);
+                            response.text().then(t => alert(t));
+                        } else {
+                            console.error('Błąd dodawania do koszyka:', response.statusText);
+                        }
+                    }).then(value => this.shoppingCartRef.fetchCartItems())
+                    .catch(error => console.error('Błąd dodawania do koszyka:', error));
+            }
+        },
+        mounted() {
+            // Pobierz oferty z serwera przy ładowaniu strony
+            this.shoppingCartRef = this.$refs.shoppingCart;
+            console.log(this.$refs.shoppingCart);
+            this.shoppingCartRef.orderUrl = [[${@staticRoutesName.ORDER}]];
+            fetch([[${@APIRoutesName.GetOFFER()}]])
+                .then(response => response.json())
+                .then(data => {
+                    this.produkty = data;
+                })
+                .catch(error => console.error('Błąd pobierania danych:', error));
+        }
+    });
+
 </script>
 
-<div th:replace="~{Footer :: footer}"></div>
 </body>
 </html>

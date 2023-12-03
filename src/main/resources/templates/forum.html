@@ -9,8 +9,9 @@
     <!-- Dodaj własny skrypt Vue.js -->
 </head>
 <body>
-<div th:replace="Header :: header"></div>
-<div id="app">
+
+<div id="forum">
+    <div th:replace="Header :: #header"></div>
     <!-- Formularz do dodawania nowego pytania -->
     <div>
         <input v-model="newQuestion.name" placeholder="Nazwa Użytkownika">
@@ -45,7 +46,8 @@
 
 </div>
 
-<script th:inline="javascript">
+<script th:inline="javascript" type="module">
+    import ShoppingCart from "./ShoppingCart.js"
     String.prototype.format = function(dataMap) {
         return this.replace(/{([^{}]+)}/g, function(match, key) {
             return dataMap[key] !== undefined ? dataMap[key] : match;
@@ -57,7 +59,10 @@
     var answerAddApiUrl = /*[[${@APIRoutesName.GetANSWER_ADD()}]]*/ '';
     // Inicjalizacja Vue
     const app = new Vue({
-        el: '#app',
+        el: '#forum',
+        components: {
+            'shoppingCart': ShoppingCart,
+        },
         data: {
             questions: questionsFromSpring,
             newQuestion: {
