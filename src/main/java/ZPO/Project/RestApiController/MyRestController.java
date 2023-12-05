@@ -10,7 +10,9 @@ import ZPO.Project.MyUtilities.MyStaticUtilities;
 import ZPO.Project.Routing.APIRoutesName;
 import ZPO.Project.Routing.StaticRoutesName;
 import ZPO.Project.Services.*;
+import ZPO.Project.Session.SessionController;
 import ZPO.Project.Session.ShoppingCart;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +32,8 @@ public class MyRestController {
     private OdpowiedzService odpowiedzService ;
     @Autowired
     private ZamowienieService zamowienieService ;
-    @Autowired
-    private ShoppingCart shoppingCart;
+//    @Autowired
+//    private ShoppingCart shoppingCart;
 
     @GetMapping("/message")
     public Message getMessage() {
@@ -74,10 +76,11 @@ public class MyRestController {
     }
 
     @PostMapping(APIRoutesName.ORDER_CREATE)
-    public ResponseEntity<CreateOrderResponse> addAnswer(@RequestBody OrderModel orderModel) {
-
+    public ResponseEntity<CreateOrderResponse> CreateOrder(@RequestBody OrderModel orderModel, HttpSession httpSession) {
+        ShoppingCart shoppingCart = SessionController.SafeGetObject(httpSession, SessionController.cartName);
         var zam = zamowienieService.CreateZamowienie(orderModel, shoppingCart.getProducts());
-        shoppingCart.Clear();
+//        shoppingCart.Clear();
+        httpSession.removeAttribute(SessionController.cartName);
         return ResponseEntity.ok(new CreateOrderResponse(StaticRoutesName.GetPaymentURL(zam.getId())));
     }
 }

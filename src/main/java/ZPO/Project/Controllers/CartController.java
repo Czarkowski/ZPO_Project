@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CartController {
 
-    private final ShoppingCart shoppingCart; // Załóżmy, że masz dostęp do instancji koszyka
+    private final ShoppingCart shoppingCart;
 
     public CartController(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;

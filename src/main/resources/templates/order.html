@@ -1,18 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html><!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Dodaj linki do Vue.js, jeśli są potrzebne -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
     <link th:href="@{styles.css}" th:rel="stylesheet"/>
 </head>
 <body>
@@ -84,6 +73,9 @@
                 postalCode: "",
                 phoneNumber: "",
             },
+        },
+        components: {
+            'shoppingCart': null,
         },
         methods: {
             submitOrder() {

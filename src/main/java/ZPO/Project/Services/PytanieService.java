@@ -27,7 +27,6 @@ public class PytanieService {
     }
     public Pytanie createPytanie(QuestionModel questionModel) {
         var pytanie = new Pytanie(questionModel);
-
         return pytanieRepository.save(pytanie);
     }
     // Dodaj inne metody serwisu

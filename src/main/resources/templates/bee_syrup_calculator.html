@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Dodaj linki do Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link th:href="@{styles.css}" th:rel="stylesheet"/>
 </head>
 <body>
 
 
 
 <div id="app">
-    <div th:replace="Header :: header"></div>
+    <div th:replace="~{Header :: header}")></div>
     <h1>Kalkulator Syropu dla Pszczół</h1>
     <label for="type">Rodzaj:</label>
     <select id="type" v-model="selectedBase">

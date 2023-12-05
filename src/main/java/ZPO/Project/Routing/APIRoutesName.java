@@ -11,7 +11,7 @@ public class APIRoutesName {
     public static final String CART_API = "/cart_api";
     public static final String CALCULATE = "/calculate";
     public static final String OFFER = "/offer";
-    public static final String ANSWER = "/answer";
+    public static final String ANSWER = "/answer/";
     public static final String ANSWER_ADD = "/answer/add/";
     public static final String QUESTION_ADD = "/question/add/";
     public static final String ORDER_CREATE = "/order/create";

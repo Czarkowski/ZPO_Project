@@ -30,14 +30,11 @@ public class ZamowienieService {
 
     public Zamowienie CreateZamowienie(OrderModel orderModel, List<Product> productList){
         var zam = new Zamowienie(orderModel);
-//        zamowienieRepository.save(zam);
         List<Pozycja> pozList = new ArrayList<Pozycja>();
         productList.forEach(product -> {
             var poz = new Pozycja(product, zam);
-//            poz.setZamowienie(zam);
             pozList.add(poz);
             System.out.println(poz);
-//            pozycjaRepository.save(poz);
         });
         zam.setPozycje(pozList);
         zamowienieRepository.save(zam);

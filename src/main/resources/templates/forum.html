@@ -6,6 +6,7 @@
     <!-- Dodaj linki do bibliotek Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link th:href="@{styles.css}" th:rel="stylesheet"/>
     <!-- Dodaj własny skrypt Vue.js -->
 </head>
 <body>
@@ -131,7 +132,7 @@
                     this.activeQuestion = null;
                 } else {
                     this.activeQuestion = question;
-                    fetch(answerApiUrl + '/' + this.activeQuestion.id)
+                    fetch(answerApiUrl + this.activeQuestion.id)
                         .then(response => response.json())
                         .then(data => {
                             this.activeAnswers = data;
