@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class BeeSyrupForm {
-
     private double sugarAmount;
     private double waterAmount;
 

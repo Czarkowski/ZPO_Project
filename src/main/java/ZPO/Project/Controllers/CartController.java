@@ -15,10 +15,4 @@ public class CartController {
     public CartController(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
-//
-//    @GetMapping(StaticRoutesName.CART)
-//    public String viewCart(Model model) {
-//        model.addAttribute("cartItems", shoppingCart.getProducts());
-//        return "cart";
-//    }
 }

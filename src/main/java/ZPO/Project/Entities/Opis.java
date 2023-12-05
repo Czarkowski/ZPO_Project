@@ -12,8 +12,6 @@ public class Opis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Inne pola
-
     @ManyToOne
     @JoinColumn(name = "oferta_id")
     private Oferta oferta;

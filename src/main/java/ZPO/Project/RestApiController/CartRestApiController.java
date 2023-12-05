@@ -15,9 +15,6 @@ import java.util.List;
 @RequestMapping(APIRoutesName.CART_API)
 public class CartRestApiController {
 
-//    @Autowired
-//    private ShoppingCart shoppingCart;
-
     @PostMapping(APIRoutesName.ADD)
     public ResponseEntity<String> addProductToCart(@RequestBody Product product, HttpSession httpSession) {
         ShoppingCart shoppingCart = SessionController.SafeGetObject(httpSession, SessionController.cartName);

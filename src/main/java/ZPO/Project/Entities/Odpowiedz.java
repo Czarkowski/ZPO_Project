@@ -33,5 +33,4 @@ public class Odpowiedz {
     protected void onCreate() {
         dataUtworzenia = new Date();
     }
-    // Getters, setters, konstruktory...
 }

@@ -12,8 +12,6 @@ public class ShopController {
 
     @GetMapping(StaticRoutesName.SHOP)
     public String shop(Model model) {
-        // Tutaj możesz dodać logikę pobierania danych o produktach miodu z serwisu
-        // i przekazać je do widoku za pomocą modelu
         return "shop";
     }
 }

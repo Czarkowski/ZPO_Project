@@ -16,8 +16,6 @@ public class Oferta {
 
     private String nazwa;
 
-
-
     @OneToMany(mappedBy = "oferta", cascade = CascadeType.ALL)
     private List<Cena> ceny;
 

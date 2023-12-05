@@ -27,8 +27,6 @@
 
     var addToCartApiUrl = /*[[${@APIRoutesName.GetCART_ADD()}]]*/ '';
     var addToCartGetUrl = /*[[${@APIRoutesName.GetCART_GET()}]]*/ '';
-    // var n =  new ShoppingCart();
-    // console.log(n);
     ShoppingCart.data().getCartUrl = addToCartGetUrl;
     const vueApp = new Vue({
         el: '#sklep',
@@ -41,7 +39,6 @@
         },
         methods: {
             addToCart(produkt) {
-                // Wyślij żądanie POST do dodania produktu do koszyka
                 fetch(addToCartApiUrl, {
                     method: 'POST',
                     headers: {
@@ -62,7 +59,6 @@
             }
         },
         mounted() {
-            // Pobierz oferty z serwera przy ładowaniu strony
             this.shoppingCartRef = this.$refs.shoppingCart;
             console.log(this.$refs.shoppingCart);
             this.shoppingCartRef.orderUrl = [[${@staticRoutesName.ORDER}]];

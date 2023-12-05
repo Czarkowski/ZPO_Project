@@ -17,12 +17,10 @@ public class Platnosc {
     @JoinColumn(name = "Zamowienie_id")
     private Zamowienie zamowienie;
 
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataUtworzenia;
     @PrePersist
     protected void onCreate() {
         dataUtworzenia = new Date();
     }
-    // Getters, setters i inne metody
 }

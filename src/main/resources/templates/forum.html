@@ -54,11 +54,9 @@
             return dataMap[key] !== undefined ? dataMap[key] : match;
         });
     };
-    // Pobierz pytania z serwera
     var questionsFromSpring = /*[[${QuestionsFromSpring}]]*/ [];
     var answerApiUrl = /*[[${@APIRoutesName.GetANSWER()}]]*/ '';
     var answerAddApiUrl = /*[[${@APIRoutesName.GetANSWER_ADD()}]]*/ '';
-    // Inicjalizacja Vue
     const app = new Vue({
         el: '#forum',
         components: {
@@ -95,9 +93,7 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        // Po sukcesie dodaj pytanie do listy
                         this.questions.push(data);
-                        // Zresetuj pola formularza
                         this.newQuestion.title = '';
                         this.newQuestion.text = '';
                         this.newQuestion.name = '';
@@ -105,8 +101,6 @@
                     .catch(error => console.error('Błąd podczas dodawania pytania:', error));
             },
             addAnswer: function () {
-                // Wysyłanie nowej odpowiedzi na serwer
-                // fetch(`${answerAddApiUrl}/${this.activeQuestion.id}`, {
                 fetch(answerAddApiUrl.format({'questionId' : this.activeQuestion.id}), {
                     method: 'POST',
                     headers: {
@@ -119,9 +113,7 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        // Po sukcesie dodaj odpowiedź do aktywnego pytania
                         this.activeAnswers.push(data);
-                        // Zresetuj pola formularza
                         this.newAnswer.text = '';
                         this.newAnswer.name = '';
                     })
@@ -140,7 +132,6 @@
                         .catch(error => console.error('Błąd pobierania danych:', error));
                 }
             },
-            // Funkcja sprawdzająca, czy dane pytanie jest aktywne
             isActiveQuestion: function (question) {
                 return this.activeQuestion === question;
             }

@@ -19,7 +19,6 @@ public class ProjectApplication implements CommandLineRunner {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-
 	@Override
 	public void run(String... args) throws Exception {
 

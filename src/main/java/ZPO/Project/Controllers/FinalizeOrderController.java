@@ -12,8 +12,6 @@ public class FinalizeOrderController {
 
     @GetMapping(StaticRoutesName.FINALIZE_ORDER)
     public String shop(Model model, @PathVariable Long orderId) {
-        // Tutaj możesz dodać logikę pobierania danych o produktach miodu z serwisu
-        // i przekazać je do widoku za pomocą modelu
         return "finalize";
     }
 }

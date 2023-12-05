@@ -6,10 +6,14 @@ import ZPO.Project.Models.OrderModel;
 import ZPO.Project.Models.Product;
 import ZPO.Project.Models.QuestionModel;
 import ZPO.Project.Repositories.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Service
 public class PasiekaService {
     private final CenaRepository cenaRepository;
     private final OfertaRepository ofertaRepository;
@@ -32,13 +36,10 @@ public class PasiekaService {
         return odpowiedzRepository.findByPytanieIdOrderByDataUtworzeniaAsc(questionId);
     }
     public Odpowiedz createOdpowiedz(Long questionId, AnswerModel answerModel) {
-        // Ustawienie pytania na podstawie ID
         Pytanie question = new Pytanie();
         question.setId(questionId);
         Odpowiedz odpowiedz = new Odpowiedz(answerModel);
         odpowiedz.setPytanie(question);
-
-        // Zapisanie odpowiedzi
         odpowiedzRepository.save(odpowiedz);
 
         return odpowiedz;

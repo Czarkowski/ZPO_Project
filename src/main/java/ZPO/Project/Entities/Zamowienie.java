@@ -42,13 +42,10 @@ public class Zamowienie {
     }
 
     public Zamowienie() {
-
     }
 
     @PrePersist
     protected void onCreate() {
         dataUtworzenia = new Date();
     }
-
-
 }

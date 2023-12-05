@@ -13,7 +13,6 @@ public class Cena {
     private Long id;
 
     private double wartosc;
-    // Inne pola
 
     @ManyToOne
     @JoinColumn(name = "oferta_id")
@@ -26,5 +25,4 @@ public class Cena {
     protected void onCreate() {
         dataUtworzenia = new Date();
     }
-    // Getters, setters i inne metody
 }
