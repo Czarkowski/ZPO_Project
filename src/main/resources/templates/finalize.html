@@ -1,10 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link th:href="@{styles.css}" th:rel="stylesheet"/>
+    <title>Status Płatności</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .status-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .failure {
+            color: red;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+
 </head>
+
 <body>
 
+<div id="app">
+    <div class="status-container">
+        <h2>Status płatnosci Zamówienia: {{paymentStatus.OrderId}}</h2>
+
+        <div v-if="paymentStatus.IsOk === true" class="success">
+            <p >Płatność zakończona pomyślnie! {{paymentStatus.Status}}. PayPalId: {{paymentStatus.PayPalId}}</p>
+
+        </div>
+        <div v-else-if="paymentStatus.IsOk === false" class="failure">
+            <p >Płatność nieudana. Spróbuj ponownie. {{paymentStatus.Status}}</p>
+
+            <button v-on:click="redirectToPayment" class="back-button">Powrót do płatności</button>
+        </div>
+
+
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const paymentStatusFromSpring = /*[[${paymentStatusModel}]]*/ '';
+    console.log(paymentStatusFromSpring);
+    new Vue({
+        el: '#app',
+        data: {
+            paymentStatus: paymentStatusFromSpring
+        },
+        mounted() {
+            // Pobieranie statusu płatności i informacji o zamówieniu z Thymeleafa
+            // this.paymentStatus = this.$el.getAttribute('data-payment-status');
+        },
+        methods: {
+            redirectToPayment() {
+                console.log('Przekieruj do płatności');
+                if (this.paymentStatus.ReturnUrl != '')
+                    window.location.href = this.paymentStatus.ReturnUrl;
+            }
+        }
+    });
+</script>
 </body>
+
 </html>

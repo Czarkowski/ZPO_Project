@@ -11,8 +11,9 @@ public class StaticRoutesName {
     public static final String CART = "/cart";
     public static final String ORDER = "/order";
     public static final String PAYMENT = "/payment/{orderId}";
-    public static final String FINALIZE_ORDER = "/finalize-order/{orderId}";
-
+    public static final String FINALIZE_ORDER = "/finalize-order/{orderId}/";
+    public static final String GOOD = "good";
+    public static final String BAD = "bad";
     public static String GetPaymentURL(Long id){
         return PAYMENT.replace("{orderId}",id.toString());
     }

@@ -71,3 +71,11 @@ VALUES ('Odpowiedz 4-1', 'UzytkownikL', 4, CURRENT_TIMESTAMP),
 -- Odpowiedzi dla Pytania 5
 INSERT INTO odpowiedz (tresc, uzytkownik, pytanie_id, data_utworzenia)
 VALUES ('Odpowiedz 5-1', 'UzytkownikO', 5, CURRENT_TIMESTAMP);
+
+INSERT INTO zamowienie (imie, nazwisko, ulica, miejscowosc, kod_pocztowy, email, tel, data_utworzenia)
+VALUES ('Jan', 'Kowalski', 'ul. Prosta 1', 'Warszawa', '00-001', 'jan.kowalski@example.com', '123456789', CURRENT_TIMESTAMP);
+
+INSERT INTO pozycja (oferta_id, cena_id, opis_id, name, ilosc, zamowienie_id)
+VALUES
+    (1, 1, 1, 'Oferta 1', 1, LAST_INSERT_ID()),
+    (2, 2, 2, 'Oferta 2', 3, LAST_INSERT_ID());

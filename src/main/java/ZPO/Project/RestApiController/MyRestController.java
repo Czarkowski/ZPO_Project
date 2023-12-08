@@ -62,6 +62,7 @@ public class MyRestController {
         return ResponseEntity.ok(new AnswerModel(savedAnswer));
     }
 
+    //Zapisujemy zamowienie do bazy i zwracamy link do platnosci
     @PostMapping(APIRoutesName.ORDER_CREATE)
     public ResponseEntity<CreateOrderResponse> CreateOrder(@RequestBody OrderModel orderModel, HttpSession httpSession) {
         ShoppingCart shoppingCart = SessionController.SafeGetObject(httpSession, SessionController.cartName);

@@ -3,6 +3,7 @@ package ZPO.Project.Entities;
 import ZPO.Project.Models.OrderModel;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ public class Zamowienie {
     @OneToOne(mappedBy = "zamowienie")
     private Platnosc platnosc;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "zamowienie",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Pozycja> pozycje;
 

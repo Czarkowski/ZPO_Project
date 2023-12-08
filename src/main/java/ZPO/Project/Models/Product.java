@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Product implements Serializable {
     private Long cenaId;
     private Long opisId;
     private String nazwa;
-    private double cena;
+    private BigDecimal cena;
     private String opis;
     private int ilosc = 1;
 

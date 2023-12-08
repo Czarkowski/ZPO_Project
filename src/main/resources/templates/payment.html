@@ -1,10 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Podsumowanie Zamówienia</title>
+    <!-- Dodaj linki do Vue.js, jeśli są potrzebne -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
+
+<div id="orderSummary">
+    <div th:replace="~{Header :: header}"></div>
+    <div>
+        <h2>Podsumowanie Zamówienia</h2>
+        <div>
+            <p>Numer Zamówienia: {{ orderModel.orderId }}</p>
+            <p>Imię: {{ orderModel.name }}</p>
+            <p>Nazwisko: {{ orderModel.surname }}</p>
+            <p>Email: {{ orderModel.email }}</p>
+            <!-- Dodaj inne dane zamówienia z modelu -->
+
+            <h3>Produkty w zamówieniu:</h3>
+            <ul>
+                <li v-for="product in orderModel.productList">{{ product.name }} - {{ product.price }} X {{ product.quantity }} = {{ product.totalPrice }} PLN</li>
+            </ul>
+
+            <h3>Łączna cena: {{ orderModel.totalPrice }} PLN</h3>
+
+
+        </div>
+    </div>
+
+</div>
+
+<div id="paypal-button-container"></div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AQqmS0iojVfpCFfmjk9T7PuS285WBDe9NvqPyFTPhlU9XE9ufXSIiWqiypOzXM1M1itTvOrTautUin2q&currency=PLN"></script>
+
+<script th:inline="javascript" type="module">
+    // Render the PayPal button into #paypal-button-container
+    const orderModelFromSpring = /*[[${paymentModel}]]*/ '';
+    const createOrderUrl = /*[[${@payPalApiRoutes.GetCreateOrder(paymentModel.orderId)}]]*/ '';
+    const approveOrderUrl = /*[[${@payPalApiRoutes.GetApproveOrder(paymentModel.orderId)}]]*/ '';
+    const payPalApiRoutes = /*[[${@payPalApiRoutes}]]*/ '';
+    console.log(payPalApiRoutes.PP_PayPalId_JS);
+    paypal.Buttons({
+        style: {
+            layout: 'horizontal'
+        },
+        // Call your server to set up the transaction
+        createOrder: (data, actions) => {
+            return fetch(createOrderUrl, {
+                method: "POST",
+            }).then((response) => response.json()
+            ).then((order) => {
+                console.log(order);
+                if (order.statusOk) {
+                    return order.orderId;
+                }
+                else if (order.payPalExceptionJson != null)
+                    console.log(order.payPalExceptionJson)
+                if (order.redirectUrl != null)
+                    window.location.replace(order.redirectUrl);
+                return '';
+            });
+        },
+
+        // Call your server to finalize the transaction
+        onApprove: (data, actions) => {
+            console.log("data OnApprone \n" + JSON.stringify(data));
+            return fetch(approveOrderUrl.replace(payPalApiRoutes.PP_PayPalId_JS ,data.orderID), {
+                method: 'POST'
+            }).then(res => res.json()
+            ).then(orderData => {
+                if (orderData.payPalExceptionJson != null)
+                    console.log(orderData.payPalExceptionJson)
+                //return actions.restart();
+                if (!orderData.statusOk && orderData.exceptionName === 'INSTRUMENT_DECLINED') {
+                    return actions.restart();
+                } else if (!orderData.statusOk && orderData.redirectUrl != null) {
+                    window.location.replace(orderData.redirectUrl);
+                } else if (orderData.statusOk && orderData.redirectUrl != null) {
+                    window.location.replace(`${orderData.redirectUrl}?Orderid=` + orderData.orderId);
+                }
+
+            });
+        }
+
+    }).render('#paypal-button-container');
+
+    const vueApp = new Vue({
+        el: '#orderSummary',
+        data: {
+            orderModel: orderModelFromSpring,
+        },
+        components:{
+            'shoppingCart': null,
+        },
+        methods: {
+            calculateTotalPrice() {
+            },
+            makePayment() {
+                // nie używam
+                console.log("Przekierowanie do bramki płatności...");
+            },
+        },
+    });
+</script>
+
+<div th:replace="~{Footer :: footer}"></div>
 
 </body>
 </html>

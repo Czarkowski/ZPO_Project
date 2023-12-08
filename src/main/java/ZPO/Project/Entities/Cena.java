@@ -3,6 +3,7 @@ package ZPO.Project.Entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -12,7 +13,7 @@ public class Cena {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double wartosc;
+    private BigDecimal wartosc;
 
     @ManyToOne
     @JoinColumn(name = "oferta_id")
