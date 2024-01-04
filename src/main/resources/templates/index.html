@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -12,10 +10,9 @@
 <body>
 <div id="index"><div th:replace="Header :: #header"></div></div>
 
-
 <h1>Witaj na stronie domowej!</h1>
 
-    <div th:replace="Footer :: footer"></div>
+<div th:replace="Footer :: footer"></div>
 
     <script th:inline="javascript" type="module">
         import ShoppingCart from "./ShoppingCart.js"
@@ -26,8 +23,6 @@
             },
 
         });
-
     </script>
-
 </body>
 </html>

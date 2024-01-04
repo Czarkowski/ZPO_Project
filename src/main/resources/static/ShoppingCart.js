@@ -1,7 +1,6 @@
 // ShoppingCart
 export default {
     el: '#shopping-Cart',
-
     data() {
         return {
             cartItems: [],

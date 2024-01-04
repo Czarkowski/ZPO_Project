@@ -19,7 +19,6 @@ public class Cena {
     @JoinColumn(name = "oferta_id")
     private Oferta oferta;
 
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataUtworzenia;
     @PrePersist

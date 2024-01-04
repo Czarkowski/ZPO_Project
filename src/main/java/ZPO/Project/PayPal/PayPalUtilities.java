@@ -163,7 +163,6 @@ public class PayPalUtilities {
             reader.close();
 
             System.out.println("Response Body: " + response.toString());
-
             return response.toString();
         } else {
             // Odczytaj informacje o błędzie, jeśli odpowiedź jest inna niż HTTP 200 OK
@@ -174,9 +173,7 @@ public class PayPalUtilities {
             while ((errorLine = errorReader.readLine()) != null) {
                 errorResponse.append(errorLine);
             }
-
             errorReader.close();
-
             System.out.println("Error Response: " + errorResponse.toString());
             try {
                 var expJson = GetObiectFromJsonString(errorResponse.toString(), PayPalExceptionJson.class);
@@ -191,33 +188,17 @@ public class PayPalUtilities {
             }
         }
     }
-
-
     public static String SerializeObject(Serializable object) {
         try {
             // Inicjalizujemy obiekt ObjectMapper
             ObjectMapper objectMapper = new ObjectMapper();
-
             // Konwertujemy obiekt na JSON
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
         }
-//        try {
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-//
-//            // Serializujemy obiekt do strumienia bajtów
-//            objectOutputStream.writeObject(object);
-//            objectOutputStream.close();
-//
-//            // Konwertujemy strumień bajtów do stringa (Base64)
-//            return java.util.Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
+
     }
 }
 

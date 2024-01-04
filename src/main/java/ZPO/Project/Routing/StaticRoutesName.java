@@ -20,8 +20,6 @@ public class StaticRoutesName {
     public static String GetFinalizeURL(Long id){
         return FINALIZE_ORDER.replace("{orderId}",id.toString());
     }
-
     public StaticRoutesName() {
-
     }
 }
