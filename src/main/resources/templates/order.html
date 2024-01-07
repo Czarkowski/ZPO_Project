@@ -8,47 +8,49 @@
 
 
 <div id="order">
-    <div th:replace="~{Header :: header}"></div>
-    <div ref="shoppingCart">
-        <div v-if="cartItems.length > 0">
-            <span>Twój koszyk ({{ orderSummary.totalItems }} produktów)</span>
-            <ul>
-                <li v-for="product in cartItems" :key="product.id">
-                    <span> {{ product.nazwa }} - {{ formatPrice(product.cena) }} zł </span>
-                    <span> Ilość: {{ product.ilosc }} - {{ formatPrice(product.cena * product.ilosc) }} zł </span>
-                    <button @click="increaseQuantity(product)">+</button>
-                    <button @click="decreaseQuantity(product)">-</button>
-                    <button @click="deleteQuantity(product)">X</button>
-                </li>
-            </ul>
-            <div>Podsumowanie: {{ formatPrice(orderSummary.totalPrice) }} zł</div>
+    <div class="page-header">
+        <div th:replace="~{Header :: header}"></div>
+        <div ref="shoppingCart">
+            <div v-if="cartItems.length > 0">
+                <span>Twój koszyk ({{ orderSummary.totalItems }} produktów)</span>
+                <ul>
+                    <li v-for="product in cartItems" :key="product.id">
+                        <span> {{ product.nazwa }} - {{ formatPrice(product.cena) }} zł </span>
+                        <span> Ilość: {{ product.ilosc }} - {{ formatPrice(product.cena * product.ilosc) }} zł </span>
+                        <button @click="increaseQuantity(product)">+</button>
+                        <button @click="decreaseQuantity(product)">-</button>
+                        <button @click="deleteQuantity(product)">X</button>
+                    </li>
+                </ul>
+                <div>Podsumowanie: {{ formatPrice(orderSummary.totalPrice) }} zł</div>
+            </div>
         </div>
     </div>
     <div>
         <h2>Formularz Zamówienia</h2>
         <form @submit.prevent="submitOrder">
             <label for="name">Imię:</label>
-            <input type="text" id="name" v-model="customerData.name" required>
+            <input class="input-text" type="text" id="name" v-model="customerData.name" required>
 
             <label for="surname">Nazwisko:</label>
-            <input type="text" id="surname" v-model="customerData.surname" required>
+            <input class="input-text" type="text" id="surname" v-model="customerData.surname" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" v-model="customerData.email" required>
+            <input class="input-text" type="email" id="email" v-model="customerData.email" required>
 
             <label for="street">Ulica z numerem domu:</label>
-            <input type="text" id="street" v-model="customerData.street" required>
+            <input class="input-text" type="text" id="street" v-model="customerData.street" required>
 
             <label for="city">Miejscowość:</label>
-            <input type="text" id="city" v-model="customerData.city" required>
+            <input class="input-text" type="text" id="city" v-model="customerData.city" required>
 
             <label for="postalCode">Kod pocztowy:</label>
-            <input type="text" id="postalCode" v-model="customerData.postalCode" required>
+            <input class="input-text" type="text" id="postalCode" v-model="customerData.postalCode" required>
 
             <label for="phoneNumber">Numer telefonu:</label>
-            <input type="tel" id="phoneNumber" v-model="customerData.phoneNumber" required>
+            <input class="input-text" type="tel" id="phoneNumber" v-model="customerData.phoneNumber" required>
 
-            <button type="submit">Złóż zamówienie</button>
+            <button class="button-kup" type="submit">Złóż zamówienie</button>
         </form>
     </div>
 </div>
@@ -90,7 +92,7 @@
                         .then(response => response.json())
                         .then(data => {
                             console.log("Zamówienie złożone:", data);
-                             window.location.href = data.redirectUrl;
+                            window.location.href = data.redirectUrl;
                         })
                         .catch(error => {
                             console.error('Błąd podczas przetwarzania zamówienia:', error);

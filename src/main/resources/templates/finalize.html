@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <link th:href="@{styles.css}" th:rel="stylesheet"/>
+    <link th:href="@{/styles.css}" th:rel="stylesheet"/>
     <title>Status Płatności</title>
 
     <style>
@@ -65,7 +65,7 @@
 
     </div>
 </div>
-
+<div th:replace="~{Footer :: footer}"></div>
 <script th:inline="javascript">
     const paymentStatusFromSpring = /*[[${paymentStatusModel}]]*/ '';
     console.log(paymentStatusFromSpring);

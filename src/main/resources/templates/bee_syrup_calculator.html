@@ -17,7 +17,7 @@
     </select>
 
     <label for="amount">Ilość:</label>
-    <input id="amount" type="text" v-model="amount">
+    <input class="input-text" id="amount" type="text" v-model="amount">
 
     <label for="ratio">Stosunek cukru do wody:</label>
     <select id="ratio" v-model="selectedRatio">
@@ -25,15 +25,15 @@
     </select>
 
 
-    <button @click="calculate">Oblicz</button>
+    <button class="button-oblicz" @click="calculate">Oblicz</button>
 
     <div v-if="result !== null">
-        <p>Woda: {{ result.water }}</p>
-        <p>Cukier: {{ result.sugar }}</p>
-        <p>Syrop: {{ result.syrup }}</p>
+        <p class="body-text">Woda: {{ result.water }}</p>
+        <p class="body-text">Cukier: {{ result.sugar }}</p>
+        <p class="body-text">Syrop: {{ result.syrup }}</p>
     </div>
 </div>
-
+<div th:replace="~{Footer :: footer}"></div>
 <script type="module">
     import ShoppingCart from "./ShoppingCart.js"
 

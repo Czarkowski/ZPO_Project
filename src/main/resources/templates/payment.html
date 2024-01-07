@@ -2,10 +2,13 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{..//styles.css}" th:rel="stylesheet"/>
     <title>Podsumowanie Zamówienia</title>
     <!-- Dodaj linki do Vue.js, jeśli są potrzebne -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 </head>
+
 <body>
 
 <div id="orderSummary">
@@ -13,15 +16,15 @@
     <div>
         <h2>Podsumowanie Zamówienia</h2>
         <div>
-            <p>Numer Zamówienia: {{ orderModel.orderId }}</p>
-            <p>Imię: {{ orderModel.name }}</p>
-            <p>Nazwisko: {{ orderModel.surname }}</p>
-            <p>Email: {{ orderModel.email }}</p>
+            <p class="bold-text">Numer Zamówienia: {{ orderModel.orderId }}</p>
+            <p class="italic-text">Imię: {{ orderModel.name }}</p>
+            <p class="italic-text">Nazwisko: {{ orderModel.surname }}</p>
+            <p class="italic-text">Email: {{ orderModel.email }}</p>
             <!-- Dodaj inne dane zamówienia z modelu -->
 
             <h3>Produkty w zamówieniu:</h3>
-            <ul>
-                <li v-for="product in orderModel.productList">{{ product.name }} - {{ product.price }} X {{ product.quantity }} = {{ product.totalPrice }} PLN</li>
+            <ul class="main-list">
+                <li class="list-item" v-for="product in orderModel.productList">{{ product.name }} - {{ product.price }} X {{ product.quantity }} = {{ product.totalPrice }} PLN</li>
             </ul>
 
             <h3>Łączna cena: {{ orderModel.totalPrice }} PLN</h3>
@@ -33,7 +36,6 @@
 </div>
 
 <div id="paypal-button-container"></div>
-
 <script src="https://www.paypal.com/sdk/js?client-id=AQqmS0iojVfpCFfmjk9T7PuS285WBDe9NvqPyFTPhlU9XE9ufXSIiWqiypOzXM1M1itTvOrTautUin2q&currency=PLN"></script>
 
 <script th:inline="javascript" type="module">

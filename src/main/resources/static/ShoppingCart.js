@@ -27,7 +27,7 @@ export default {
             </li>
           </ul>
           <div>Podsumowanie: {{ formatPrice(orderSummary.totalPrice) }} zł</div>
-          <button @click="placeOrder">Złóż zamówienie</button>
+          <button class="button-kup" @click="placeOrder">Złóż zamówienie</button>
         </div>
         <div v-else>
           <span>Koszyk jest pusty</span>

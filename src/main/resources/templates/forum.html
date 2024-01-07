@@ -13,17 +13,22 @@
 
 <div id="forum">
     <div th:replace="Header :: #header"></div>
+
+    <div class="forum-header">
+        <h1 class="forum-title">Nasze Forum</h1>
+        <p class="forum-description">Dyskusje, pytania i współdzielenie wiedzy</p>
+    </div>
     <!-- Formularz do dodawania nowego pytania -->
     <div>
-        <input v-model="newQuestion.name" placeholder="Nazwa Użytkownika">
-        <input v-model="newQuestion.title" placeholder="Tytuł pytania">
-        <textarea v-model="newQuestion.text" placeholder="Treść pytania"></textarea>
-        <button @click="addQuestion">Dodaj pytanie</button>
+        <input class="input-text" v-model="newQuestion.name" placeholder="Nazwa Użytkownika">
+        <input class="input-text" v-model="newQuestion.title" placeholder="Tytuł pytania">
+        <textarea class="input-text" v-model="newQuestion.text" placeholder="Treść pytania"></textarea>
+        <button class="button-dodaj" @click="addQuestion">Dodaj pytanie</button>
     </div>
 
     <!-- Lista pytań -->
-    <ul>
-        <li v-for="question in questions" :key="question.id">
+    <ul class="main-list">
+        <li class="list-item" v-for="question in questions" :key="question.id">
             <!-- Kliknięcie na pytanie wyświetli odpowiedzi -->
             <div @click="toggleQuestion(question)">
                 <span>{{ question.uzytkownik }}:{{ question.tytul }}:{{ question.dataUtworzenia | formatDateTime }}</span>
@@ -31,12 +36,12 @@
             </div>
 
             <!-- Lista odpowiedzi dla aktywnego pytania -->
-            <ul v-if="isActiveQuestion(question)">
-                <input v-model="newAnswer.name" placeholder="Nazwa Użytkownika">
-                <input v-model="newAnswer.text" placeholder="Nowa odpowiedź">
-                <button @click="addAnswer(question)">Dodaj odpowiedź</button>
+            <ul class="nested-list" v-if="isActiveQuestion(question)">
+                <input class="input-text" v-model="newAnswer.name" placeholder="Nazwa Użytkownika">
+                <input class="input-text" v-model="newAnswer.text" placeholder="Nowa odpowiedź">
+                <button class="button-dodaj" @click="addAnswer(question)">Dodaj odpowiedź</button>
                 <br>
-                <li v-for="answer in activeAnswers" :key="answer.id">
+                <li class="list-item" v-for="answer in activeAnswers" :key="answer.id">
                     <span>{{ answer.uzytkownik }}:{{ answer.dataUtworzenia | formatDateTime }}</span>
                     <p>{{ answer.tresc }}</p>
                 </li>
@@ -46,7 +51,7 @@
 
 
 </div>
-
+<div th:replace="~{Footer :: footer}"></div>
 <script th:inline="javascript" type="module">
     import ShoppingCart from "./ShoppingCart.js"
     String.prototype.format = function(dataMap) {
