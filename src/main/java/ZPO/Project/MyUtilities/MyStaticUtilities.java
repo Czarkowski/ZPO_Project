@@ -56,7 +56,7 @@ public class MyStaticUtilities {
                     s = w * multiplier;
                 }
             }
-        } catch (MatchException e) {
+        } catch (Exception e) {
             c = 0;
             w = 0;
             s = 0;
