@@ -5,17 +5,16 @@ import ZPO.Project.Routing.APIRoutesName;
 import ZPO.Project.Session.SessionController;
 import ZPO.Project.Session.ShoppingCart;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(APIRoutesName.CART_API)
+@RequestMapping(APIRoutesName.PREFIX)
 public class CartRestApiController {
 
-    @PostMapping(APIRoutesName.ADD)
+    @PostMapping(APIRoutesName.CART)
     public ResponseEntity<String> addProductToCart(@RequestBody Product product, HttpSession httpSession) {
         ShoppingCart shoppingCart = SessionController.SafeGetObject(httpSession, SessionController.cartName);
         String response;
@@ -40,7 +39,7 @@ public class CartRestApiController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(APIRoutesName.GET)
+    @GetMapping(APIRoutesName.CART)
     public ResponseEntity<List<Product>> getCartProducts(HttpSession httpSession) {
         ShoppingCart shoppingCart = SessionController.SafeGetObject(httpSession, SessionController.cartName);
         List<Product> products = shoppingCart.getProducts();

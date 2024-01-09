@@ -212,3 +212,180 @@ body{
     display: inline; /* Wyświetlanie elementów listy w jednej linii */
     margin: 0 10px; /* Odstęp między elementami listy */
 }
+
+
+/* Stylizacja przycisku "Kup" */
+.button-kup,
+.button-dodaj-do-koszyka,
+.button-dodaj,
+.button-oblicz {
+    width: 100%; /* Rozciągnij przycisk na pełną szerokość */
+    margin-bottom: 10px; /* Dodatkowy odstęp między przyciskami */
+}
+
+/* Stylizacja pól tekstowych */
+.input-text {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Stylizacja tytułów */
+.title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Stylizacja elementów listy */
+.list-item,
+.nested-list .list-item {
+    border: none; /* Usunięcie obramowania dla elementu listy w wersji mobilnej */
+}
+
+/* Stylizacja nagłówka strony */
+.page-header {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Stylizacja tytułu nagłówka */
+.page-title {
+    font-size: 28px; /* Mniejsza wielkość czcionki w wersji mobilnej */
+}
+
+/* Stylizacja opisu nagłówka */
+.page-description {
+    font-size: 16px; /* Mniejsza wielkość czcionki w wersji mobilnej */
+    margin-bottom: 15px;
+}
+
+/* Stylizacja linków w nagłówku */
+.page-header a {
+    margin: 0 5px; /* Mniejszy odstęp między linkami w wersji mobilnej */
+}
+
+/* Stylizacja stopki strony */
+.page-footer {
+    background-color: #34495e;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+/* Stylizacja linków w stopce */
+.page-footer a {
+    margin: 0 5px; /* Mniejszy odstęp między linkami w wersji mobilnej */
+}
+
+.page-footer li {
+    margin: 0 5px; /* Mniejszy odstęp między elementami listy w wersji mobilnej */
+}
+
+/* Stylizacja przycisku "Kup" */
+.button-kup,
+.button-dodaj-do-koszyka,
+.button-dodaj,
+.button-oblicz {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Stylizacja pól tekstowych */
+.input-text {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Stylizacja tytułów */
+.title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Stylizacja elementów listy */
+.list-item,
+.nested-list .list-item {
+    border: none;
+}
+
+/* Stylizacja nagłówka strony */
+.page-header {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Stylizacja tytułu nagłówka */
+.page-title {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+/* Stylizacja opisu nagłówka */
+.page-description {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Stylizacja linków w nagłówku */
+.page-header a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.page-header a:hover {
+    text-decoration: underline;
+}
+
+/* Stylizacja stopki strony */
+.page-footer {
+    background-color: #34495e;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+/* Stylizacja linków w stopce */
+.page-footer a {
+    margin: 0 10px;
+}
+
+.page-footer a:hover {
+    text-decoration: underline;
+}
+
+.page-footer ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.page-footer li {
+    display: inline;
+    margin: 0 10px;
+}
+
+/* Media Query dla urządzeń o szerokości mniejszej niż 768px (tablet i telefon) */
+@media screen and (max-width: 768px) {
+    /* Dodatkowe dostosowania dla wersji mobilnej */
+    .button-kup,
+    .button-dodaj-do-koszyka,
+    .button-dodaj,
+    .button-oblicz {
+        width: auto; /* Zwróć szerokość do domyślnej */
+    }
+
+    .page-title {
+        font-size: 28px; /* Mniejsza czcionka dla wersji mobilnej */
+    }
+
+    .page-description {
+        font-size: 16px; /* Mniejsza czcionka dla wersji mobilnej */
+        margin-bottom: 15px;
+    }
+}

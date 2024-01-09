@@ -4,7 +4,6 @@ import ZPO.Project.ApiModels.CalculationRequest;
 import ZPO.Project.ApiModels.CalculationResponse;
 import ZPO.Project.Entities.Odpowiedz;
 import ZPO.Project.Entities.Pytanie;
-import ZPO.Project.Entities.Zamowienie;
 import ZPO.Project.Models.*;
 import ZPO.Project.MyUtilities.MyStaticUtilities;
 import ZPO.Project.Routing.APIRoutesName;
@@ -48,7 +47,7 @@ public class MyRestController {
         return ResponseEntity.ok(answer);
     }
 
-    @PostMapping(APIRoutesName.QUESTION_ADD)
+    @PostMapping(APIRoutesName.QUESTION)
     public ResponseEntity<QuestionModel> addQuestion(@RequestBody QuestionModel question) {
 
         Pytanie savedQuestion = pasiekaService.createPytanie(question);
@@ -56,14 +55,14 @@ public class MyRestController {
         return ResponseEntity.ok(new QuestionModel(savedQuestion));
     }
 
-    @PostMapping(APIRoutesName.ANSWER_ADD + APIRoutesName.PATHPARAM_QUESTIONID)
+    @PostMapping(APIRoutesName.ANSWER + APIRoutesName.PATHPARAM_QUESTIONID)
     public ResponseEntity<AnswerModel> addAnswer(@PathVariable Long questionId, @RequestBody AnswerModel answer) {
         Odpowiedz savedAnswer = pasiekaService.createOdpowiedz(questionId, answer);
         return ResponseEntity.ok(new AnswerModel(savedAnswer));
     }
 
     //Zapisujemy zamowienie do bazy i zwracamy link do platnosci
-    @PostMapping(APIRoutesName.ORDER_CREATE)
+    @PostMapping(APIRoutesName.ORDER)
     public ResponseEntity<CreateOrderResponse> CreateOrder(@RequestBody OrderModel orderModel, HttpSession httpSession) {
         ShoppingCart shoppingCart = SessionController.SafeGetObject(httpSession, SessionController.cartName);
         var zam = pasiekaService.CreateZamowienie(orderModel, shoppingCart.getProducts());

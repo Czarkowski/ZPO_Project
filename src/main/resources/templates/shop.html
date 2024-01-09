@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Dodaj linki do Vue.js, jeśli są potrzebne -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link th:href="@{styles.css}" th:rel="stylesheet"/>
@@ -25,8 +26,8 @@
 <script th:inline="javascript" type="module">
     import ShoppingCart from "./ShoppingCart.js"
 
-    var addToCartApiUrl = /*[[${@APIRoutesName.GetCART_ADD()}]]*/ '';
-    var addToCartGetUrl = /*[[${@APIRoutesName.GetCART_GET()}]]*/ '';
+    var addToCartApiUrl = /*[[${@APIRoutesName.GetCART()}]]*/ '';
+    var addToCartGetUrl = /*[[${@APIRoutesName.GetCART()}]]*/ '';
     ShoppingCart.data().getCartUrl = addToCartGetUrl;
     const vueApp = new Vue({
         el: '#sklep',
