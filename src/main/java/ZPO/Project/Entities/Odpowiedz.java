@@ -2,6 +2,7 @@ package ZPO.Project.Entities;
 
 import ZPO.Project.Models.AnswerModel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,7 +14,10 @@ public class Odpowiedz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Size(min = 10, max = 1023)
     private String tresc;
+
+    @Size(min = 3, max = 255)
     private String uzytkownik;
 
     @ManyToOne

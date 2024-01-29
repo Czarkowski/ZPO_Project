@@ -12,11 +12,15 @@ import ZPO.Project.Services.*;
 import ZPO.Project.Session.SessionController;
 import ZPO.Project.Session.ShoppingCart;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(APIRoutesName.PREFIX)
@@ -25,6 +29,18 @@ public class MyRestController {
     @Autowired
     private PasiekaService pasiekaService;
 
+    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+    @PostMapping(APIRoutesName.QUESTION)
+    public ResponseEntity<?> addQuestion(@RequestBody QuestionModel question) {
+        Set<ConstraintViolation<QuestionModel>> violations = validator.validate(question);
+        if (!violations.isEmpty()) {
+            return ResponseEntity.badRequest().body(violations.toString());
+        } else {
+            Pytanie savedQuestion = pasiekaService.createPytanie(question);
+            return ResponseEntity.ok(new QuestionModel(savedQuestion));
+        }
+    }
 
     @PostMapping(APIRoutesName.CALCULATE)
     public ResponseEntity<CalculationResponse> calculate(@RequestBody CalculationRequest request) {
@@ -45,14 +61,6 @@ public class MyRestController {
         var odpowiedzi = pasiekaService.getAllAnswersForQuestionSortedByDate(questionId);
         var answer = AnswerModel.GetAnswersFromOdpowiedzi(odpowiedzi);
         return ResponseEntity.ok(answer);
-    }
-
-    @PostMapping(APIRoutesName.QUESTION)
-    public ResponseEntity<QuestionModel> addQuestion(@RequestBody QuestionModel question) {
-
-        Pytanie savedQuestion = pasiekaService.createPytanie(question);
-
-        return ResponseEntity.ok(new QuestionModel(savedQuestion));
     }
 
     @PostMapping(APIRoutesName.ANSWER + APIRoutesName.PATHPARAM_QUESTIONID)

@@ -2,6 +2,7 @@ package ZPO.Project.Entities;
 
 import ZPO.Project.Models.QuestionModel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -15,8 +16,14 @@ public class Pytanie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @Size(min = 10, max = 4095)
     private String tresc;
+
+    @Size(min = 3, max = 255)
     private String uzytkownik;
+
+    @Size(min = 3, max = 255)
     private String tytul;
 
     @OneToMany(mappedBy = "pytanie", cascade = CascadeType.ALL)
